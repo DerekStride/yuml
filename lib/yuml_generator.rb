@@ -5,6 +5,7 @@ class YUMLClass
   def initialize
     @methods = []
     @variables = []
+    @relationships = []
   end
 
   def name(name = nil)
@@ -25,8 +26,19 @@ class YUMLClass
     end
   end
 
+  def has_a(dest, options = {})
+    relationship = YUMLRelationship.relationship(options)
+    @relationships << "[#{name}]#{relationship}[#{dest.name}]"
+  end
+
+  def is_a(dest, options = {})
+    relationship = YUMLRelationship.relationship(options)
+    @relationships << "[#{dest.name}]#{relationship}[#{name}]"
+  end
+
   def to_s
-    "[#{name}#{variables}#{methods}]"
+    relate = ", #{@relationships.join(', ')}" unless @relationships.empty?
+    "[#{name}#{variables}#{methods}]#{relate}"
   end
 
   private
@@ -82,36 +94,43 @@ class YUMLClass
 end
 
 # Represents a yUML relationship
-class YUMLRelationship
-  def initialize(options)
-    types = %i(aggregation composition inheritance interface)
-    @type = options.fetch(:type)
-    @type = :aggregation unless types.include?(@type)
-    @cardinality = options[:cardinality]
-  end
+module YUMLRelationship
+  extend self
 
-  def to_s
-    return composition if %i(aggregation composition).include?(@type)
-    return inheritance if %i(inheritance interface).include?(@type)
+  def relationship(options)
+    options = { type: :aggregation }.merge(options)
+    types = %i(aggregation composition inheritance interface)
+    type = options[:type]
+    type = :aggregation unless types.include?(type)
+    cardinality = options[:cardinality]
+    representation(type, cardinality)
   end
 
   private
 
-  def composition
+  def representation(type, cardinality)
+    if %i(aggregation composition).include?(type)
+      return composition(type, cardinality)
+    elsif %i(inheritance interface).include?(type)
+      return inheritance(type)
+    end
+  end
+
+  def composition(type, cardinality)
     base = '+'
-    base << '+' if @type == :composition
-    if @cardinality.nil?
+    base << '+' if type == :composition
+    if cardinality.nil?
       base << '->'
-    elsif @cardinality.class == Array && @cardinality.length == 2
-      base << "#{@cardinality[0]}-#{@cardinality[1]}>"
+    elsif cardinality.class == Array && cardinality.length == 2
+      base << "#{cardinality[0]}-#{cardinality[1]}>"
     else
-      base << "-#{@cardinality}>"
+      base << "-#{cardinality}>"
     end
     base
   end
 
-  def inheritance
-    return '^-.-' if @type == :interface
+  def inheritance(type)
+    return '^-.-' if type == :interface
     '^-'
   end
 end
@@ -125,10 +144,5 @@ class YUML
     y = YUMLClass.new
     yield y
     y
-  end
-
-  def has_a(src, dest, type = :aggregation, cardinality = nil)
-    relationship = YUMLRelationship.new(type: type, cardinality: cardinality)
-    "#{src}#{relationship}#{dest}"
   end
 end

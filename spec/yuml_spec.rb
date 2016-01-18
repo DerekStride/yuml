@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'pp'
-require_relative '../uml'
+require_relative '../lib/yuml_generator'
 
 describe YUML do
   before :each do
@@ -24,24 +24,30 @@ describe YUML do
       expect(doc.to_s).to eq doc_uml
     end
   end
-
-  describe '#has_a' do
-    before :each do
-      @doc = @uut.class do |c|
-        c.name 'Document'
-        c.add_public_variables(:foo, :bar)
-        c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
-      end
-    end
-
-    it 'should handle composition' do
-      relationship = @uut.has_a(@doc, @doc, :aggregation)
-      expect(relationship.to_s).to eq "#{@doc}+->#{@doc}"
-    end
-
-    it 'should handle composition and cardinality' do
-      relationship = @uut.has_a(@doc, @doc, :composition, [0, '*'])
-      expect(relationship.to_s).to eq "#{@doc}++0-*>#{@doc}"
-    end
-  end
 end
+
+# UML.generate do |uml|
+#   document = uml.class do |c|
+#     c.name 'Document'
+#     c.add_public_variables(:foo, :bar)
+#     c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
+#   end
+#
+#   picture = @uut.class do |c|
+#     c.name 'Picture'
+#     c.add_public_methods(:bar)
+#     c.add_private_variables(:foo)
+#   end
+#
+#   content = uml.class do |c|
+#     c.name 'Content'
+#   end
+#
+#   element = uml.class do |c|
+#     c.name 'Element'
+#   end
+#
+#   document.is_a(content, :inheritance)
+#   picture.is_a(content, :inheritance)
+#   content.is_a(element, :interface)
+# end
