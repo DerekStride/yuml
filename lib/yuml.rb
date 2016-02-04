@@ -1,6 +1,6 @@
 # Fetches UML from yUML
-require_relative 'yuml_generator/yuml_class'
-require_relative 'yuml_generator/yuml_relationship'
+require_relative 'yuml/class'
+require_relative 'yuml/relationship'
 
 module YUML
   def generate_class

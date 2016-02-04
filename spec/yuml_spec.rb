@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'pp'
-require_relative '../lib/yuml_generator'
+require_relative '../lib/yuml'
 
 describe YUML do
   describe '#class' do
