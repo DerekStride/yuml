@@ -2,18 +2,14 @@ require 'spec_helper'
 require 'pp'
 require_relative '../lib/yuml_generator'
 
-describe YUMLRelationship do
-  before :each do
-    @uut0 = YUMLRelationship.relationship(type: :aggregation)
-  end
-
+describe YUML::Relationship do
   describe '#relationship' do
     before :each do
-      @uut0 = YUMLRelationship.relationship(type: :aggregation)
-      @uut1 = YUMLRelationship.relationship(type: :composition,
+      @uut0 = YUML::Relationship.relationship(type: :aggregation)
+      @uut1 = YUML::Relationship.relationship(type: :composition,
                                             cardinality: [0, '*'])
-      @uut2 = YUMLRelationship.relationship(type: :inheritance)
-      @uut3 = YUMLRelationship.relationship(type: :interface)
+      @uut2 = YUML::Relationship.relationship(type: :inheritance)
+      @uut3 = YUML::Relationship.relationship(type: :interface)
     end
 
     it 'should handle aggregation' do

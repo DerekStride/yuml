@@ -3,20 +3,19 @@ require 'pp'
 require_relative '../lib/yuml_generator'
 
 describe YUML do
-  before :each do
-    @uut = YUML.new
-  end
-
-  describe '#new' do
-    it 'takes no parameters and returns a YUML object' do
-      expect(@uut).to be_an_instance_of(YUML)
-    end
-  end
-
   describe '#class' do
+    it 'should return a YUML::Class' do
+      doc = YUML.generate_class do |c|
+        c.name 'Document'
+        c.add_public_variables(:foo, :bar)
+        c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
+      end
+      expect(doc).to be_an_instance_of YUML::Class
+    end
+
     it 'takes a block and builds a YUMLClass' do
       doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()]'
-      doc = @uut.class do |c|
+      doc = YUML.generate_class do |c|
         c.name 'Document'
         c.add_public_variables(:foo, :bar)
         c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)

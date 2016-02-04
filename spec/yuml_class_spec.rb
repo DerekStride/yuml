@@ -2,14 +2,14 @@ require 'spec_helper'
 require 'pp'
 require_relative '../lib/yuml_generator'
 
-describe YUMLClass do
+describe YUML::Class do
   before :each do
-    @uut = YUMLClass.new
+    @uut = YUML::Class.new
   end
 
   describe '#new' do
-    it 'takes no parameters and returns a YUMLClass object' do
-      expect(@uut).to be_an_instance_of(YUMLClass)
+    it 'takes no parameters and returns a YUML::Class object' do
+      expect(@uut).to be_an_instance_of(YUML::Class)
     end
   end
 
@@ -71,13 +71,12 @@ describe YUMLClass do
 
   describe '#has_a' do
     before :each do
-      yuml = YUML.new
-      @doc = yuml.class do |c|
+      @doc = YUML.generate_class do |c|
         c.name 'Document'
         c.add_public_variables(:foo, :bar)
         c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
       end
-      @pic = yuml.class do |c|
+      @pic = YUML.generate_class do |c|
         c.name 'Picture'
         c.add_public_methods(:bar)
         c.add_private_variables(:foo)
@@ -85,7 +84,7 @@ describe YUMLClass do
       @doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()], '
     end
 
-    it 'should handle composition' do
+    it 'should handle aggregation' do
       @doc.has_a(@pic)
       expect(@doc.to_s).to eq "#{@doc_uml}[Document]+->[Picture]"
     end
@@ -98,13 +97,12 @@ describe YUMLClass do
 
   describe '#is_a' do
     before :each do
-      yuml = YUML.new
-      @doc = yuml.class do |c|
+      @doc = YUML.generate_class do |c|
         c.name 'Document'
         c.add_public_variables(:foo, :bar)
         c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
       end
-      @pic = yuml.class do |c|
+      @pic = YUML.generate_class do |c|
         c.name 'Picture'
         c.add_public_methods(:bar)
         c.add_private_variables(:foo)
