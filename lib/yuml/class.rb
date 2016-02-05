@@ -14,19 +14,19 @@ module YUML
       @name
     end
 
-    def add_public_methods(*args)
+    def public_methods(*args)
       uml_methods('+', *args)
     end
 
-    def add_private_methods(*args)
+    def private_methods(*args)
       uml_methods('-', *args)
     end
 
-    def add_public_variables(*args)
+    def public_variables(*args)
       uml_variables('+', *args)
     end
 
-    def add_private_variables(*args)
+    def private_variables(*args)
       uml_variables('-', *args)
     end
 
@@ -36,6 +36,7 @@ module YUML
     end
 
     def is_a(dest, options = {})
+      options[:type] = :inheritance unless %i(inheritance interface).include?(options[:type])
       relationship = YUML::Relationship.relationship(options)
       @relationships << "[#{dest.name}]#{relationship}[#{name}]"
     end

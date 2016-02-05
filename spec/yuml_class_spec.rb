@@ -25,61 +25,61 @@ describe YUML::Class do
     end
   end
 
-  describe '#add_public_variables' do
+  describe '#public_variables' do
     before :each do
       @uut.name 'Document'
     end
 
     it 'takes an array of symbols and adds it to the class' do
-      @uut.add_public_variables(:foo, :bar)
+      @uut.public_variables(:foo, :bar)
       expect(@uut.to_s).to eq '[Document|+foo;+bar]'
     end
   end
 
-  describe '#add_private_variables' do
+  describe '#private_variables' do
     before :each do
       @uut.name 'Document'
     end
 
     it 'takes an array of symbols and adds it to the class' do
-      @uut.add_private_variables(:foo, :bar)
+      @uut.private_variables(:foo, :bar)
       expect(@uut.to_s).to eq '[Document|-foo;-bar]'
     end
   end
 
-  describe '#add_public_methods' do
+  describe '#public_methods' do
     before :each do
       @uut.name 'Document'
     end
 
     it 'takes an array of symbols and adds it to the class' do
-      @uut.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
+      @uut.public_methods({ foo: [:name, 'other = nil'] }, :bar)
       expect(@uut.to_s).to eq '[Document|+foo(name, other = nil);+bar()]'
     end
   end
 
-  describe '#add_private_methods' do
+  describe '#private_methods' do
     before :each do
       @uut.name 'Document'
     end
 
     it 'takes an array of symbols and adds it to the class' do
-      @uut.add_private_methods({ foo: [:name, 'other = nil'] }, :bar)
+      @uut.private_methods({ foo: [:name, 'other = nil'] }, :bar)
       expect(@uut.to_s).to eq '[Document|-foo(name, other = nil);-bar()]'
     end
   end
 
   describe '#has_a' do
     before :each do
-      @doc = YUML.generate_class do |c|
+      @doc = YUML.class do |c|
         c.name 'Document'
-        c.add_public_variables(:foo, :bar)
-        c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
+        c.public_variables(:foo, :bar)
+        c.public_methods({ foo: [:name, 'other = nil'] }, :bar)
       end
-      @pic = YUML.generate_class do |c|
+      @pic = YUML.class do |c|
         c.name 'Picture'
-        c.add_public_methods(:bar)
-        c.add_private_variables(:foo)
+        c.public_methods(:bar)
+        c.private_variables(:foo)
       end
       @doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()], '
     end
@@ -97,15 +97,15 @@ describe YUML::Class do
 
   describe '#is_a' do
     before :each do
-      @doc = YUML.generate_class do |c|
+      @doc = YUML.class do |c|
         c.name 'Document'
-        c.add_public_variables(:foo, :bar)
-        c.add_public_methods({ foo: [:name, 'other = nil'] }, :bar)
+        c.public_variables(:foo, :bar)
+        c.public_methods({ foo: [:name, 'other = nil'] }, :bar)
       end
-      @pic = YUML.generate_class do |c|
+      @pic = YUML.class do |c|
         c.name 'Picture'
-        c.add_public_methods(:bar)
-        c.add_private_variables(:foo)
+        c.public_methods(:bar)
+        c.private_variables(:foo)
       end
       @doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()], '
     end
