@@ -54,7 +54,7 @@ describe YUML::Class do
 
     it 'takes an array of symbols and adds it to the class' do
       @uut.public_methods({ foo: [:name, 'other = nil'] }, :bar)
-      expect(@uut.to_s).to eq '[Document|+foo(name, other = nil);+bar()]'
+      expect(@uut.to_s).to eq "[Document|+foo(name#{YUML::ESCAPE_COMMA} other = nil);+bar()]"
     end
   end
 
@@ -65,7 +65,7 @@ describe YUML::Class do
 
     it 'takes an array of symbols and adds it to the class' do
       @uut.private_methods({ foo: [:name, 'other = nil'] }, :bar)
-      expect(@uut.to_s).to eq '[Document|-foo(name, other = nil);-bar()]'
+      expect(@uut.to_s).to eq "[Document|-foo(name#{YUML::ESCAPE_COMMA} other = nil);-bar()]"
     end
   end
 
@@ -81,17 +81,16 @@ describe YUML::Class do
         c.public_methods(:bar)
         c.private_variables(:foo)
       end
-      @doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()], '
     end
 
     it 'should handle aggregation' do
       @doc.has_a(@pic)
-      expect(@doc.to_s).to eq "#{@doc_uml}[Document]+->[Picture]"
+      expect(@doc.relationships).to eq '[Document]+->[Picture]'
     end
 
     it 'should handle composition and cardinality' do
       @doc.has_a(@pic, type: :composition, cardinality: [0, '*'])
-      expect(@doc.to_s).to eq "#{@doc_uml}[Document]++0-*>[Picture]"
+      expect(@doc.relationships).to eq '[Document]++0-*>[Picture]'
     end
   end
 
@@ -107,17 +106,16 @@ describe YUML::Class do
         c.public_methods(:bar)
         c.private_variables(:foo)
       end
-      @doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()], '
     end
 
     it 'should handle inheritance' do
       @doc.is_a(@pic, type: :inheritance)
-      expect(@doc.to_s).to eq "#{@doc_uml}[Picture]^-[Document]"
+      expect(@doc.relationships).to eq '[Picture]^-[Document]'
     end
 
     it 'should handle interface' do
       @doc.is_a(@pic, type: :interface)
-      expect(@doc.to_s).to eq "#{@doc_uml}[Picture]^-.-[Document]"
+      expect(@doc.relationships).to eq '[Picture]^-.-[Document]'
     end
   end
 end

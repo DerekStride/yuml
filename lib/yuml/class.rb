@@ -42,11 +42,23 @@ module YUML
     end
 
     def to_s
-      relate = ", #{@relationships.join(', ')}" unless @relationships.empty?
-      "[#{name}#{variables}#{methods}]#{relate}"
+      "[#{name}#{variables}#{methods}]"
+    end
+
+    def relationships
+      "#{@relationships.join(',')}" unless @relationships.empty?
     end
 
     private
+
+    def normalize(values)
+      values.map(&:to_s).map do |v|
+        YUML::ESCAPE_CHARACTERS.each do |char, escape|
+          v.tr!(char, escape)
+        end
+        v
+      end.join("\u201A ")
+    end
 
     def uml_variables(scope, *args)
       args.each { |var| variable(scope: scope, attribute: var) }
@@ -54,12 +66,12 @@ module YUML
 
     def uml_methods(scope, *args)
       args.each do |m|
-        met = if m.class == Hash
-                m.map { |k, v| "#{k}(#{v.join(', ')})" }.join(';')
-              else
-                "#{m}()"
-              end
-        method(scope: scope, attribute: met)
+        if m.class == Hash
+          mets = m.map { |k, v| "#{k}(#{normalize(v)})" }
+          mets.each { |met| method(scope: scope, attribute: met) }
+        else
+          method(scope: scope, attribute: "#{m}()")
+        end
       end
     end
 

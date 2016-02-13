@@ -15,7 +15,7 @@ describe YUML do
       end
 
       it 'takes a block and builds a YUMLClass' do
-        doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()]'
+        doc_uml = "[Document|+foo;+bar|+foo(name#{YUML::ESCAPE_COMMA} other = nil);+bar()]"
         doc = YUML.class do |c|
           c.name 'Document'
           c.public_variables(:foo, :bar)
@@ -27,7 +27,7 @@ describe YUML do
 
     context 'it should work when given with instance_eval' do
       it 'takes a block and builds a YUMLClass' do
-        doc_uml = '[Document|+foo;+bar|+foo(name, other = nil);+bar()]'
+        doc_uml = "[Document|+foo;+bar|+foo(name#{YUML::ESCAPE_COMMA} other = nil);+bar()]"
         doc = YUML.class do
           name 'Document'
           public_variables :foo, :bar
