@@ -1,7 +1,7 @@
 # Fetches UML from yUML
 require 'net/http'
-require_relative 'yuml/class'
-require_relative 'yuml/relationship'
+require 'yuml/class'
+require 'yuml/relationship'
 
 module YUML
   extend self
@@ -47,6 +47,6 @@ module YUML
   end
 
   def encodings
-    "#{ESCAPE_CHARACTERS.values.join}#{ESCAPE_COMMA}[](){}+->|,=;* "
+    "#{ESCAPE_CHARACTERS.values.join}#{ESCAPE_COMMA}[](){}+->|.,=;*^ "
   end
 end
