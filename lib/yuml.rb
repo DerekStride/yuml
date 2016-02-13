@@ -37,7 +37,6 @@ module YUML
     uml = classes.map(&:to_s).join(',')
     relationships = classes.map(&:relationships).compact
     uml << ',' << relationships.join(',') unless relationships.empty?
-    puts uml
     URI.encode(uml, encodings)
   end
 
@@ -50,33 +49,4 @@ module YUML
   def encodings
     "#{ESCAPE_CHARACTERS.values.join}#{ESCAPE_COMMA}[](){}+->|,=;* "
   end
-end
-
-YUML.generate(file: 'tmp.pdf') do |uml|
-  doc = uml.class do
-    name 'Document'
-  end
-
-  pic = uml.class do
-    name 'Picture'
-    public_methods :foo
-  end
-
-  doc.has_a(pic)
-end
-
-YUML.generate(file: 'tmp2.pdf') do |uml|
-  doc = uml.class do
-    name 'Document'
-  end
-
-  pic = uml.class do
-    name 'Picture'
-    public_variables :fizz
-    private_variables :buzz
-    public_methods(foo: [:bar])
-    private_methods(baz: ['arg = nil', 'param = {}', '*args'], lam: [:star])
-  end
-
-  doc.has_a(pic)
 end
