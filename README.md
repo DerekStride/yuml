@@ -84,3 +84,5 @@ YUML.generate(file: 'example.pdf') do |uml|
   picture.is_a(content)
 end
 ```
+
+![output](https://cloud.githubusercontent.com/assets/6456191/13030379/c3cee084-d276-11e5-8f09-17ea74787614.png)
