@@ -10,6 +10,8 @@ module YUML
   ESCAPE_CHARACTERS = {
     '{' => "\u23A8",
     '}' => "\u23AC",
+    '<' => "\u3008",
+    '>' => "\u3009",
     ',' => "\u201A"
   }
 
