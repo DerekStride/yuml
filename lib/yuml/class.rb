@@ -14,20 +14,16 @@ module YUML
       @name
     end
 
-    def public_methods(*args)
-      uml_methods('+', *args)
+    def variables(*args)
+      args.flatten!
+      return attributes(@variables) if args.empty?
+      @variables << normalize(args)
     end
 
-    def private_methods(*args)
-      uml_methods('-', *args)
-    end
-
-    def public_variables(*args)
-      uml_variables('+', *args)
-    end
-
-    def private_variables(*args)
-      uml_variables('-', *args)
+    def methods(*args)
+      args.flatten!
+      return attributes(@methods) if args.empty?
+      @methods << normalize(args)
     end
 
     def has_a(dest, options = {})
@@ -54,48 +50,9 @@ module YUML
 
     def normalize(values)
       values.map(&:to_s).map do |v|
-        YUML::ESCAPE_CHARACTERS.each do |char, escape|
-          v.tr!(char, escape)
-        end
+        YUML::ESCAPE_CHARACTERS.each { |char, escape| v.tr!(char, escape) }
         v
-      end.join("\u201A ")
-    end
-
-    def uml_variables(scope, *args)
-      args.each { |var| variable(scope: scope, attribute: var) }
-    end
-
-    def uml_methods(scope, *args)
-      args.each do |m|
-        if m.class == Hash
-          mets = m.map { |k, v| "#{k}(#{normalize(v)})" }
-          mets.each { |met| method(scope: scope, attribute: met) }
-        else
-          method(scope: scope, attribute: "#{m}()")
-        end
       end
-    end
-
-    def method(options)
-      attribute(@methods, options)
-    end
-
-    def variable(options)
-      attribute(@variables, options)
-    end
-
-    def attribute(attributes, options)
-      scope = options[:scope] || '+'
-      scope = '+' unless %w(+ -).include?(scope)
-      attributes << "#{scope}#{options.fetch(:attribute)}"
-    end
-
-    def methods
-      attributes(@methods)
-    end
-
-    def variables
-      attributes(@variables)
     end
 
     def attributes(attrs)

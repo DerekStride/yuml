@@ -3,15 +3,15 @@ require 'net/http'
 require 'yuml/class'
 require 'yuml/relationship'
 
+# A module to create a DSL for yuml.me
 module YUML
   extend self
 
   ESCAPE_CHARACTERS = {
     '{' => "\u23A8",
-    '}' => "\u23AC"
+    '}' => "\u23AC",
+    ',' => "\u201A"
   }
-
-  ESCAPE_COMMA = "\u201A"
 
   def generate(options)
     options = { file: '/tmp/yuml.pdf' }.merge(options)
@@ -47,6 +47,6 @@ module YUML
   end
 
   def encodings
-    "#{ESCAPE_CHARACTERS.values.join}#{ESCAPE_COMMA}[](){}+->|.,=;*^ "
+    "#{ESCAPE_CHARACTERS.values.join}[](){}+->|.,=;*^ "
   end
 end

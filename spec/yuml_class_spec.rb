@@ -25,47 +25,30 @@ describe YUML::Class do
     end
   end
 
-  describe '#public_variables' do
+  describe '#variables' do
     before :each do
       @uut.name 'Document'
     end
 
-    it 'takes an array of symbols and adds it to the class' do
-      @uut.public_variables(:foo, :bar)
-      expect(@uut.to_s).to eq '[Document|+foo;+bar]'
+    it 'takes symbols and adds it to the class' do
+      @uut.variables(:foo, :bar)
+      expect(@uut.to_s).to eq '[Document|foo;bar]'
+    end
+
+    it 'takes strings and adds it to the class' do
+      @uut.variables('+foo:String', '-bar:int')
+      expect(@uut.to_s).to eq '[Document|+foo:String;-bar:int]'
     end
   end
 
-  describe '#private_variables' do
-    before :each do
-      @uut.name 'Document'
-    end
-
+  describe '#methods' do
     it 'takes an array of symbols and adds it to the class' do
-      @uut.private_variables(:foo, :bar)
-      expect(@uut.to_s).to eq '[Document|-foo;-bar]'
-    end
-  end
-
-  describe '#public_methods' do
-    before :each do
       @uut.name 'Document'
-    end
-
-    it 'takes an array of symbols and adds it to the class' do
-      @uut.public_methods({ foo: [:name, 'other = nil'] }, :bar)
-      expect(@uut.to_s).to eq "[Document|+foo(name#{YUML::ESCAPE_COMMA} other = nil);+bar()]"
-    end
-  end
-
-  describe '#private_methods' do
-    before :each do
-      @uut.name 'Document'
-    end
-
-    it 'takes an array of symbols and adds it to the class' do
-      @uut.private_methods({ foo: [:name, 'other = nil'] }, :bar)
-      expect(@uut.to_s).to eq "[Document|-foo(name#{YUML::ESCAPE_COMMA} other = nil);-bar()]"
+      @uut.methods(
+        '+foo(name, other = nil)',
+        '-bar()'
+      )
+      expect(@uut.to_s).to eq "[Document|+foo(name#{YUML::ESCAPE_CHARACTERS[',']} other = nil);-bar()]"
     end
   end
 
@@ -73,13 +56,16 @@ describe YUML::Class do
     before :each do
       @doc = YUML.class do |c|
         c.name 'Document'
-        c.public_variables(:foo, :bar)
-        c.public_methods({ foo: [:name, 'other = nil'] }, :bar)
+        c.variables('+foo', '+bar')
+        c.methods(
+          '+foo(name, other = nil)',
+          '+bar()'
+        )
       end
       @pic = YUML.class do |c|
         c.name 'Picture'
-        c.public_methods(:bar)
-        c.private_variables(:foo)
+        c.methods('+bar()')
+        c.variables('-foo')
       end
     end
 
@@ -103,13 +89,16 @@ describe YUML::Class do
     before :each do
       @doc = YUML.class do |c|
         c.name 'Document'
-        c.public_variables(:foo, :bar)
-        c.public_methods({ foo: [:name, 'other = nil'] }, :bar)
+        c.variables('+foo', '+bar')
+        c.methods(
+          '+foo(name, other = nil)',
+          '+bar()'
+        )
       end
       @pic = YUML.class do |c|
         c.name 'Picture'
-        c.public_methods(:bar)
-        c.private_variables(:foo)
+        c.methods('+bar()')
+        c.variables('-foo')
       end
     end
 
