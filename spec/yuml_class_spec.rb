@@ -88,6 +88,11 @@ describe YUML::Class do
       expect(@doc.relationships).to eq '[Document]+->[Picture]'
     end
 
+    it 'should handle cardinality' do
+      @doc.has_a(@pic, cardinality: '*')
+      expect(@doc.relationships).to eq '[Document]+-*>[Picture]'
+    end
+
     it 'should handle composition and cardinality' do
       @doc.has_a(@pic, type: :composition, cardinality: [0, '*'])
       expect(@doc.relationships).to eq '[Document]++0-*>[Picture]'

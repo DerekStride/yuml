@@ -31,13 +31,14 @@ module YUML
     end
 
     def has_a(dest, options = {})
-      relationship = YUML::Relationship.relationship(options)
+      options[:type] = :aggregation unless %i(composition aggregation).include?(options[:type])
+      relationship = YUML::Relationship.send(options[:type], options[:cardinality])
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end
 
     def is_a(dest, options = {})
       options[:type] = :inheritance unless %i(inheritance interface).include?(options[:type])
-      relationship = YUML::Relationship.relationship(options)
+      relationship = YUML::Relationship.send(options[:type])
       @relationships << "[#{dest.name}]#{relationship}[#{name}]"
     end
 
