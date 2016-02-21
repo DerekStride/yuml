@@ -5,6 +5,19 @@ require_relative '../lib/yuml'
 describe YUML::Class do
   before :each do
     @uut = YUML::Class.new
+    @doc = YUML.class do |c|
+      c.name 'Document'
+      c.variables('+foo', '+bar')
+      c.methods(
+        '+foo(name, other = nil)',
+        '+bar()'
+      )
+    end
+    @pic = YUML.class do |c|
+      c.name 'Picture'
+      c.methods('+bar()')
+      c.variables('-foo')
+    end
   end
 
   describe '#new' do
@@ -53,22 +66,6 @@ describe YUML::Class do
   end
 
   describe '#has_a' do
-    before :each do
-      @doc = YUML.class do |c|
-        c.name 'Document'
-        c.variables('+foo', '+bar')
-        c.methods(
-          '+foo(name, other = nil)',
-          '+bar()'
-        )
-      end
-      @pic = YUML.class do |c|
-        c.name 'Picture'
-        c.methods('+bar()')
-        c.variables('-foo')
-      end
-    end
-
     it 'should handle aggregation' do
       @doc.has_a(@pic)
       expect(@doc.relationships).to eq '[Document]+->[Picture]'
@@ -86,22 +83,6 @@ describe YUML::Class do
   end
 
   describe '#is_a' do
-    before :each do
-      @doc = YUML.class do |c|
-        c.name 'Document'
-        c.variables('+foo', '+bar')
-        c.methods(
-          '+foo(name, other = nil)',
-          '+bar()'
-        )
-      end
-      @pic = YUML.class do |c|
-        c.name 'Picture'
-        c.methods('+bar()')
-        c.variables('-foo')
-      end
-    end
-
     it 'should handle inheritance' do
       @doc.is_a(@pic, type: :inheritance)
       expect(@doc.relationships).to eq '[Picture]^-[Document]'
@@ -110,6 +91,23 @@ describe YUML::Class do
     it 'should handle interface' do
       @doc.is_a(@pic, type: :interface)
       expect(@doc.relationships).to eq '[Picture]^-.-[Document]'
+    end
+  end
+
+  describe '#associated_with' do
+    it 'should handle a default association' do
+      @doc.associated_with(@pic)
+      expect(@doc.relationships).to eq '[Document]->[Picture]'
+    end
+
+    it 'should handle an association with cardinality' do
+      @doc.associated_with(@pic, cardinality: %w(uses used))
+      expect(@doc.relationships).to eq '[Document]uses-used>[Picture]'
+    end
+
+    it 'should handle a bi directional associations with cardinality' do
+      @doc.associated_with(@pic, type: :two_way_association, cardinality: ['used by'])
+      expect(@doc.relationships).to eq '[Document]<-used by>[Picture]'
     end
   end
 end

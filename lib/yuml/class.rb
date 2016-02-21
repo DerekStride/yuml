@@ -38,6 +38,12 @@ module YUML
       @relationships << "[#{dest.name}]#{relationship}[#{name}]"
     end
 
+    def associated_with(dest, options = {})
+      options[:type] = :association unless %i(association two_way_association).include?(options[:type])
+      relationship = YUML::Relationship.send(options[:type], options[:cardinality])
+      @relationships << "[#{name}]#{relationship}[#{dest.name}]"
+    end
+
     def to_s
       "[#{name}#{variables}#{methods}]"
     end
