@@ -12,18 +12,21 @@ module YUML
     end
 
     def composition(*args)
-      "+#{aggregation(*args)}"
+      "++#{association(*args)}"
     end
 
     def aggregation(*args)
+      "+#{association(*args)}"
+    end
+
+    def two_way_association(*args)
+      "<#{association(*args)}"
+    end
+
+    def association(*args)
       args.flatten!
-      if args.size == 2
-        "+#{args[0]}-#{args[1]}>"
-      elsif args.size == 1
-        "+-#{args.first}>"
-      else
-        '+->'
-      end
+      return "-#{args.first}>" if args.size == 1
+      "#{args.first}-#{args.last}>"
     end
   end
 end

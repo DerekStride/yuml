@@ -42,4 +42,32 @@ describe YUML::Relationship do
       expect(YUML::Relationship.aggregation('1', '*')).to eq '+1-*>'
     end
   end
+
+  describe '#association' do
+    it 'should return the default association relationship' do
+      expect(YUML::Relationship.association).to eq '->'
+    end
+
+    it 'should handle a single cardinality' do
+      expect(YUML::Relationship.association('*')).to eq '-*>'
+    end
+
+    it 'should handle a two sided cardinality' do
+      expect(YUML::Relationship.association('1', '*')).to eq '1-*>'
+    end
+  end
+
+  describe '#two_way_association' do
+    it 'should return the default two_way_association relationship' do
+      expect(YUML::Relationship.two_way_association).to eq '<->'
+    end
+
+    it 'should handle a single cardinality' do
+      expect(YUML::Relationship.two_way_association('*')).to eq '<-*>'
+    end
+
+    it 'should handle a two sided cardinality' do
+      expect(YUML::Relationship.two_way_association('1', '*')).to eq '<1-*>'
+    end
+  end
 end
