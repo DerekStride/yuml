@@ -83,4 +83,4 @@ YUML.generate(file: 'example.pdf') do |uml|
 end
 ```
 
-![output](https://cloud.githubusercontent.com/assets/6456191/13030379/c3cee084-d276-11e5-8f09-17ea74787614.png)
+![output](https://cloud.githubusercontent.com/assets/6456191/13322710/bc91e81c-dba3-11e5-88d3-16e1980f7cb4.png)
