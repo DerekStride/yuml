@@ -17,21 +17,19 @@ end
 To generate a class for the document use `uml.class` and pass a code block in to configure it. It accepts the following methods for configuration.
 
 * name (required)
-* public_variables
-* private_variables
-* public_methods
-* private_methods
+* variables
+* methods
 
 #### Example
 
 ```ruby
 document = uml.class do
   name 'Document'
-  private_variables :title, :body
-  public_methods(
-    add_section: [:id, :content, 'style = normal'],
-    remove_section: [:id],
-    edit_section: [:id, :content, 'style = normal']
+  variables '-title: String', '-body: String'
+  methods(
+    '+add_section(id: int, content: String, style: Symbol)',
+    '+remove_section(id: int)',
+    '+edit_section(id: int, content: String, style: Symbol)'
   )
 end
 ```
@@ -51,7 +49,7 @@ After generating some classes to add relationships to them use the following `YU
 document.has_a(picture, cardinality: '0..*')
 document.is_a(content)
 
-picture.is_a(content)
+picture.is_a(content, type: :interface)
 ```
 
 ### Test it Out
@@ -62,11 +60,11 @@ require 'yuml'
 YUML.generate(file: 'example.pdf') do |uml|
   document = uml.class do
     name 'Document'
-    private_variables :title, :body
-    public_methods(
-      add_section: [:id, :content, 'style = normal'],
-      remove_section: [:id],
-      edit_section: [:id, :content, 'style = normal']
+    variables '-title: String', '-body: String'
+    methods(
+      '+add_section(id: int, content: String, style: Symbol)',
+      '+remove_section(id: int)',
+      '+edit_section(id: int, content: String, style: Symbol)'
     )
   end
 
