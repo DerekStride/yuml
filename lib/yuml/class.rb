@@ -39,7 +39,9 @@ module YUML
     end
 
     def associated_with(dest, options = {})
-      options[:type] = :association unless %i(association two_way_association).include?(options[:type])
+      options[:type] = :directed_assoication unless %i(
+        association directed_assoication two_way_association dependency
+      ).include?(options[:type])
       relationship = YUML::Relationship.send(options[:type], options[:cardinality])
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end

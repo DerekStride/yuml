@@ -109,5 +109,15 @@ describe YUML::Class do
       @doc.associated_with(@pic, type: :two_way_association, cardinality: ['used by'])
       expect(@doc.relationships).to eq '[Document]<-used by>[Picture]'
     end
+
+    it 'should handle a undirected association' do
+      @doc.associated_with(@pic, type: :association, cardinality: ['used by'])
+      expect(@doc.relationships).to eq '[Document]-used by[Picture]'
+    end
+
+    it 'should handle a dependency' do
+      @doc.associated_with(@pic, type: :dependency, cardinality: %w(uses used))
+      expect(@doc.relationships).to eq '[Document]uses-.-used>[Picture]'
+    end
   end
 end

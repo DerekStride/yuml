@@ -46,7 +46,7 @@ After generating some classes to add relationships to them use the following `YU
 
 `is_a` can be **inheritance** or **interface** but defaults to inheritance.
 
-`associated_with` can be **association** or **two_way_association** but defaults to association.
+`associated_with` can be **association**, **directed_association**, **two_way_association**, or **dependancy** but defaults to directed_association.
 
 #### Example
 
@@ -55,6 +55,7 @@ document.has_a(picture, cardinality: '0..*')
 document.is_a(content)
 
 picture.is_a(content, type: :interface)
+content.associated_with(content, type: dependency)
 ```
 
 ### Test it Out
