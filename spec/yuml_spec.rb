@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pp'
 require_relative '../lib/yuml'
 
 describe YUML do
