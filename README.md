@@ -40,8 +40,13 @@ After generating some classes to add relationships to them use the following `YU
 
 * `has_a(node, options = {})`
 * `is_a(node, options = {})`
+* `associated_with(node, options = {})`
 
-`has_a` defaults to aggregation and `is_a` defaults to inheritance.
+`has_a` can be **composition** or **aggregation** but defaults to aggregation.
+
+`is_a` can be **inheritance** or **interface** but defaults to inheritance.
+
+`associated_with` can be **association** or **two_way_association** but defaults to association.
 
 #### Example
 
