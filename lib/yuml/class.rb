@@ -46,6 +46,10 @@ module YUML
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end
 
+    def attach_note(content, options = {})
+      @relationships << "[#{name}]-#{YUML::Note.create(content, options)}"
+    end
+
     def to_s
       "[#{name}#{variables}#{methods}]"
     end

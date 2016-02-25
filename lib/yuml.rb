@@ -2,6 +2,7 @@
 require 'net/http'
 require 'yuml/class'
 require 'yuml/relationship'
+require 'yuml/note'
 
 # A module to create a DSL for yuml.me
 module YUML
@@ -18,6 +19,7 @@ module YUML
   def generate(options)
     options = { file: '/tmp/yuml.pdf' }.merge(options)
     classes.clear
+    notes.clear
     yield self
     fetch_uml options[:file]
   end
@@ -29,16 +31,25 @@ module YUML
     yuml_class
   end
 
+  def attach_note(content, options = {})
+    notes << YUML::Note.create(content, options)
+  end
+
   private
 
   def classes
     @classes ||= []
   end
 
+  def notes
+    @notes ||= []
+  end
+
   def yuml
     uml = classes.map(&:to_s).join(',')
     relationships = classes.map(&:relationships).compact
     uml << ',' << relationships.join(',') unless relationships.empty?
+    uml << ',' << notes.join(',') unless notes.empty?
     URI.encode(uml, encodings)
   end
 

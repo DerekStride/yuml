@@ -119,4 +119,11 @@ describe YUML::Class do
       expect(@doc.relationships).to eq '[Document]uses-.-used>[Picture]'
     end
   end
+
+  describe '#attach_note' do
+    it 'should add a note to the relationships' do
+      @doc.attach_note('This diagram blongs to Derek Stride')
+      expect(@doc.relationships).to eq '[Document]-[note: This diagram blongs to Derek Stride{bg:cornsilk}]'
+    end
+  end
 end
