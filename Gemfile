@@ -4,4 +4,5 @@ group :development do
   gem 'rspec'
   gem 'webmock'
   gem 'fakefs'
+  gem 'rake'
 end

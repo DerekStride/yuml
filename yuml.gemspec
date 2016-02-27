@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = 'A Ruby DSL for generating UML built on yuml.me'
   s.authors     = ['Derek Stride']
   s.email       = 'djgstride@gmail.com'
-  s.files       = ['lib/yuml.rb', 'lib/yuml/class.rb', 'lib/yuml/relationship.rb', 'lib/yuml/note.rb']
+  s.files       = Dir['Rakefile', '{bin,lib,man,test,spec}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
   s.homepage    = 'https://github.com/DerekStride/yuml'
   s.license     = 'MIT'
   s.add_development_dependency 'rspec', '~> 3.4'
