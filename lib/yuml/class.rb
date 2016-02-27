@@ -31,28 +31,28 @@ module YUML
       @methods << normalize(args)
     end
 
-    def has_a(dest, options = {})
-      options[:type] = :aggregation unless %i(composition aggregation).include?(options[:type])
-      relationship = YUML::Relationship.send(options[:type], options[:cardinality])
+    def has_a(dest, type: :aggregation, cardinality: nil)
+      type = :aggregation unless %i(composition aggregation).include?(type)
+      relationship = YUML::Relationship.send(type, cardinality)
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end
 
-    def is_a(dest, options = {})
-      options[:type] = :inheritance unless %i(inheritance interface).include?(options[:type])
-      relationship = YUML::Relationship.send(options[:type])
+    def is_a(dest, type: :inheritance)
+      type = :inheritance unless %i(inheritance interface).include?(type)
+      relationship = YUML::Relationship.send(type)
       @relationships << "[#{dest.name}]#{relationship}[#{name}]"
     end
 
-    def associated_with(dest, options = {})
-      options[:type] = :directed_assoication unless %i(
+    def associated_with(dest, type: :directed_assoication, cardinality: nil)
+      type = :directed_assoication unless %i(
         association directed_assoication two_way_association dependency
-      ).include?(options[:type])
-      relationship = YUML::Relationship.send(options[:type], options[:cardinality])
+      ).include?(type)
+      relationship = YUML::Relationship.send(type, cardinality)
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end
 
-    def attach_note(content, options = {})
-      @relationships << "[#{name}]-#{YUML::Note.create(content, options)}"
+    def attach_note(content, color: nil)
+      @relationships << "[#{name}]-#{YUML::Note.create(content, color: color)}"
     end
 
     def to_s

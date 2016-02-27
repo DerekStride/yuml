@@ -17,12 +17,11 @@ module YUML
     '#' => "\u0023"
   }
 
-  def generate(options)
-    options = { file: '/tmp/yuml.pdf' }.merge(options)
+  def generate(file: '/tmp/yuml.pdf')
     classes.clear
     notes.clear
     yield self
-    fetch_uml options[:file]
+    fetch_uml file
   end
 
   def class(&block)

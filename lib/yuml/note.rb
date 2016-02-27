@@ -3,9 +3,8 @@ module YUML
   module Note
     module_function
 
-    def create(body, options = {})
-      color = options[:color] || 'cornsilk'
-      "[note: #{body}{bg:#{color}}]"
+    def create(body, color: 'cornsilk')
+      "[note: #{body}{bg:#{color || 'cornsilk'}}]"
     end
   end
 end
