@@ -37,6 +37,23 @@ describe YUML::Class do
     end
   end
 
+  describe '#interface' do
+    before :all do
+      left = "#{YUML::ESCAPE_CHARACTERS['<']}" * 2
+      right = "#{YUML::ESCAPE_CHARACTERS['>']}" * 2
+      @interface_uml = "[#{left}interface#{right};Document]"
+    end
+    it 'takes a interface and updates the class' do
+      @uut.interface 'Document'
+      expect(@uut.to_s).to eq @interface_uml
+    end
+
+    it 'should work with interface= as well' do
+      @uut.interface = 'Document'
+      expect(@uut.to_s).to eq @interface_uml
+    end
+  end
+
   describe '#variables' do
     before :each do
       @uut.name 'Document'
@@ -87,9 +104,12 @@ describe YUML::Class do
       expect(@doc.relationships).to eq '[Picture]^-[Document]'
     end
 
-    it 'should handle interface' do
+    it 'should handle interfaces' do
+      @pic.interface 'Picture'
       @doc.is_a(@pic, type: :interface)
-      expect(@doc.relationships).to eq '[Picture]^-.-[Document]'
+      left = "#{YUML::ESCAPE_CHARACTERS['<']}" * 2
+      right = "#{YUML::ESCAPE_CHARACTERS['>']}" * 2
+      expect(@doc.relationships).to eq "[#{left}interface#{right};Picture]^-.-[Document]"
     end
   end
 

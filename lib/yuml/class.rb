@@ -1,7 +1,7 @@
 module YUML
   # Represents a yUML Class
   class Class
-    attr_writer :name
+    attr_writer :name, :interface
 
     def initialize
       @methods = []
@@ -11,7 +11,12 @@ module YUML
 
     def name(name = nil)
       @name = name if name
-      @name
+      "#{normalized_interface}#{@name}"
+    end
+
+    def interface(interface = nil)
+      @interface = interface if interface
+      @interface
     end
 
     def variables(*args)
@@ -65,6 +70,11 @@ module YUML
         YUML::ESCAPE_CHARACTERS.each { |char, escape| v.tr!(char, escape) }
         v
       end
+    end
+
+    def normalized_interface
+      name interface unless @name
+      return normalize(['<<interface>>']).first << ';' if interface
     end
 
     def attributes(attrs)
