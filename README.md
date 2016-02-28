@@ -17,8 +17,11 @@ end
 To generate a class for the document use `uml.class` and pass a code block in to configure it. It accepts the following methods for configuration.
 
 * name (required)
+* interface*
 * variables
 * methods
+
+\*use `interface` in place of `name` when generating an interface
 
 #### Example
 
@@ -31,6 +34,13 @@ document = uml.class do
     '+remove_section(id: int)',
     '+edit_section(id: int, content: String, style: Symbol)'
   )
+end
+```
+
+```ruby
+shape = uml.class do
+  interface 'Shape'
+  methods '+draw(id: int, content: String, style: Symbol)'
 end
 ```
 
