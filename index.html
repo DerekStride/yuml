@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>The UML DSL by DerekStride</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>The UML DSL</h1>
+          <h2>A Ruby DSL for generating UML built on yuml.me</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/DerekStride/yuml/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/DerekStride/yuml/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/DerekStride/yuml" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="the-uml-dsl" class="anchor" href="#the-uml-dsl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The UML DSL</h1>
+
+<p>A Ruby DSL for generating UML built on yuml.me</p>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>To build a UML document start with this block of code. Everything inside the block will be used to describe the uml document you want to create.</p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">YUML</span>.generate(<span class="pl-c1">file:</span> <span class="pl-s"><span class="pl-pds">'</span>tmp.pdf<span class="pl-pds">'</span></span>) <span class="pl-k">do </span>|<span class="pl-smi">uml</span>|
+  ...
+<span class="pl-k">end</span></pre></div>
+
+<h3>
+<a id="generating-a-class" class="anchor" href="#generating-a-class" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Generating a Class</h3>
+
+<p>To generate a class for the document use <code>uml.class</code> and pass a code block in to configure it. It accepts the following methods for configuration.</p>
+
+<ul>
+<li>
+<code>name(name = nil)</code> (required)</li>
+<li>
+<code>interface(interface = nil, sterotype = 'interface')</code>*</li>
+<li><code>variables(*args)</code></li>
+<li><code>methods(*args)</code></li>
+</ul>
+
+<p>*use <code>interface</code> in place of <code>name</code> when generating an interface</p>
+
+<h4>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-ruby"><pre>document <span class="pl-k">=</span> uml.class <span class="pl-k">do</span>
+  name <span class="pl-s"><span class="pl-pds">'</span>Document<span class="pl-pds">'</span></span>
+  variables <span class="pl-s"><span class="pl-pds">'</span>-title: String<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>-body: String<span class="pl-pds">'</span></span>
+  methods(
+    <span class="pl-s"><span class="pl-pds">'</span>+add_section(id: int, content: String, style: Symbol)<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>+remove_section(id: int)<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>+edit_section(id: int, content: String, style: Symbol)<span class="pl-pds">'</span></span>
+  )
+<span class="pl-k">end</span></pre></div>
+
+<div class="highlight highlight-source-ruby"><pre>shape <span class="pl-k">=</span> uml.class <span class="pl-k">do</span>
+  interface <span class="pl-s"><span class="pl-pds">'</span>Shape<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>module<span class="pl-pds">'</span></span>
+  methods <span class="pl-s"><span class="pl-pds">'</span>+draw(id: int, content: String, style: Symbol)<span class="pl-pds">'</span></span>
+<span class="pl-k">end</span></pre></div>
+
+<h3>
+<a id="adding-relationships" class="anchor" href="#adding-relationships" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding Relationships</h3>
+
+<p>After generating some classes to add relationships to them use the following <code>YUML::Class</code> methods.</p>
+
+<ul>
+<li><code>has_a(node, options = {})</code></li>
+<li><code>is_a(node, options = {})</code></li>
+<li><code>associated_with(node, options = {})</code></li>
+<li>
+<code>attach_note(content, options = {})</code> *options include color!</li>
+</ul>
+
+<p><code>has_a</code> can be <strong>composition</strong> or <strong>aggregation</strong> but defaults to aggregation.</p>
+
+<p><code>is_a</code> can be <strong>inheritance</strong> or <strong>interface</strong> but defaults to inheritance.</p>
+
+<p><code>associated_with</code> can be <strong>association</strong>, <strong>directed_association</strong>, <strong>two_way_association</strong>, or <strong>dependancy</strong> but defaults to directed_association.</p>
+
+<h4>
+<a id="example-1" class="anchor" href="#example-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-ruby"><pre>document.has_a(picture, <span class="pl-c1">cardinality:</span> <span class="pl-s"><span class="pl-pds">'</span>0..*<span class="pl-pds">'</span></span>)
+document.is_a(content)
+
+picture.is_a(content, <span class="pl-c1">type:</span> <span class="pl-c1">:interface</span>)
+content.associated_with(content, <span class="pl-c1">type:</span> <span class="pl-c1">:association</span>, <span class="pl-c1">cardinality:</span> <span class="pl-s"><span class="pl-pds">%w(</span>uses used<span class="pl-pds">)</span></span>)
+document.attach_note(<span class="pl-s"><span class="pl-pds">'</span>This is a document<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>green<span class="pl-pds">'</span></span>)</pre></div>
+
+<h3>
+<a id="adding-notes" class="anchor" href="#adding-notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding notes</h3>
+
+<p>You can add notes to the document itself as well as attached to a class</p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">YUML</span>.generate(<span class="pl-c1">file:</span> <span class="pl-s"><span class="pl-pds">'</span>tmp.pd<span class="pl-pds">'</span></span>) <span class="pl-k">do </span>|<span class="pl-smi">uml</span>|
+  uml.attach_note(<span class="pl-s"><span class="pl-pds">'</span>Cool UML Tool?<span class="pl-pds">'</span></span>)
+<span class="pl-k">end</span></pre></div>
+
+<h3>
+<a id="test-it-out" class="anchor" href="#test-it-out" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test it Out</h3>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>yuml<span class="pl-pds">'</span></span>
+
+<span class="pl-c1">YUML</span>.generate(<span class="pl-c1">file:</span> <span class="pl-s"><span class="pl-pds">'</span>example.pdf<span class="pl-pds">'</span></span>) <span class="pl-k">do </span>|<span class="pl-smi">uml</span>|
+  document <span class="pl-k">=</span> uml.class <span class="pl-k">do</span>
+    name <span class="pl-s"><span class="pl-pds">'</span>Document<span class="pl-pds">'</span></span>
+    variables <span class="pl-s"><span class="pl-pds">'</span>-title: String<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>-body: String<span class="pl-pds">'</span></span>
+    methods(
+      <span class="pl-s"><span class="pl-pds">'</span>+add_section(id: int, content: String, style: Symbol)<span class="pl-pds">'</span></span>,
+      <span class="pl-s"><span class="pl-pds">'</span>+remove_section(id: int)<span class="pl-pds">'</span></span>,
+      <span class="pl-s"><span class="pl-pds">'</span>+edit_section(id: int, content: String, style: Symbol)<span class="pl-pds">'</span></span>
+    )
+  <span class="pl-k">end</span>
+
+  picture <span class="pl-k">=</span> uml.class <span class="pl-k">do</span>
+    name <span class="pl-s"><span class="pl-pds">'</span>Picture<span class="pl-pds">'</span></span>
+  <span class="pl-k">end</span>
+
+  content <span class="pl-k">=</span> uml.class <span class="pl-k">do</span>
+    name <span class="pl-s"><span class="pl-pds">'</span>Content<span class="pl-pds">'</span></span>
+  <span class="pl-k">end</span>
+
+  document.has_a(picture, <span class="pl-c1">cardinality:</span> <span class="pl-s"><span class="pl-pds">'</span>0..*<span class="pl-pds">'</span></span>)
+  document.is_a(content)
+
+  picture.is_a(content)
+<span class="pl-k">end</span></pre></div>
+
+<p><img src="https://cloud.githubusercontent.com/assets/6456191/13322710/bc91e81c-dba3-11e5-88d3-16e1980f7cb4.png" alt="output"></p>
+        </section>
+
+        <footer>
+          The UML DSL is maintained by <a href="https://github.com/DerekStride">DerekStride</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-58890104-4");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
