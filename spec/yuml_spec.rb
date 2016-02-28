@@ -71,4 +71,10 @@ describe YUML do
       expect(File.read(@options[:file])).to eq 'abc'
     end
   end
+
+  describe '#attach_note' do
+    it 'should work' do
+      expect { YUML.attach_note('test', 'green') }.not_to raise_error
+    end
+  end
 end

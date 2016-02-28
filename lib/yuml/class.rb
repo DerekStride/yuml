@@ -51,8 +51,8 @@ module YUML
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
     end
 
-    def attach_note(content, color: nil)
-      @relationships << "[#{name}]-#{YUML::Note.create(content, color: color)}"
+    def attach_note(content, color = nil)
+      @relationships << "[#{name}]-#{YUML::Note.create(content, color)}"
     end
 
     def to_s

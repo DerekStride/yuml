@@ -31,8 +31,8 @@ module YUML
     yuml_class
   end
 
-  def attach_note(content, options = {})
-    notes << YUML::Note.create(content, options)
+  def attach_note(content, color = nil)
+    notes << YUML::Note.create(content, color)
   end
 
   private
