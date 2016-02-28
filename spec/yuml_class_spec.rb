@@ -42,15 +42,31 @@ describe YUML::Class do
       left = "#{YUML::ESCAPE_CHARACTERS['<']}" * 2
       right = "#{YUML::ESCAPE_CHARACTERS['>']}" * 2
       @interface_uml = "[#{left}interface#{right};Document]"
-    end
-    it 'takes a interface and updates the class' do
-      @uut.interface 'Document'
-      expect(@uut.to_s).to eq @interface_uml
+      @module_uml = "[#{left}module#{right};Document]"
     end
 
-    it 'should work with interface= as well' do
-      @uut.interface = 'Document'
-      expect(@uut.to_s).to eq @interface_uml
+    context 'with default sterotype' do
+      it 'takes an interface and updates the class' do
+        @uut.interface 'Document'
+        expect(@uut.to_s).to eq @interface_uml
+      end
+
+      it 'should work with interface=' do
+        @uut.interface = 'Document'
+        expect(@uut.to_s).to eq @interface_uml
+      end
+    end
+
+    context 'with custom sterotype' do
+      it 'takes an interface and updates the class' do
+        @uut.interface 'Document', 'module'
+        expect(@uut.to_s).to eq @module_uml
+      end
+
+      it 'should work with interface=' do
+        @uut.interface = 'Document', 'module'
+        expect(@uut.to_s).to eq @module_uml
+      end
     end
   end
 
