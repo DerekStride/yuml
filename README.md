@@ -1,10 +1,10 @@
-# yuml
+# The UML DSL
 
-A Ruby DSL for generating UML built on yuml.me
+A Ruby DSL for generating UML built on yuml.me, visit the [homepage](http://derekstride.io/yuml/) to learn more.
 
 ## Getting Started
 
-To build a UML document start with this block of code. Everything inside the block will be used to descibe the uml document you want to create.
+To build a UML document start with this block of code. Everything inside the block will be used to describe the uml document you want to create.
 
 ```ruby
 YUML.generate(file: 'tmp.pdf') do |uml|
@@ -66,13 +66,13 @@ document.has_a(picture, cardinality: '0..*')
 document.is_a(content)
 
 picture.is_a(content, type: :interface)
-content.associated_with(content, type: dependency)
-document.attach_note('This is a document', color: :green)
+content.associated_with(content, type: :association, cardinality: %w(uses used))
+document.attach_note('This is a document', 'green')
 ```
 
 ### Adding notes
 
-You can add notes too the document itself as well as attached to class
+You can add notes to the document itself as well as attached to a class
 
 ```ruby
 YUML.generate(file: 'tmp.pd') do |uml|
