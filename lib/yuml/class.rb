@@ -9,21 +9,16 @@ module YUML
       @relationships = []
     end
 
-    def name(name = nil)
+    def name(name = nil, prototype = nil)
       @name = name if name
-      "#{normalized_interface}#{@name}"
+      @prototype = prototype if prototype
+      "#{normalized_prototype}#{@name}"
     end
 
-    def interface(interface = nil, sterotype = 'interface')
-      @interface = interface if interface
-      @sterotype = sterotype if interface
-      @interface
-    end
-
-    def interface=(*args)
+    def name=(*args)
       args.flatten!
-      @interface = args.first
-      @sterotype = args.size > 1 ? args.pop : 'interface'
+      @name = args.first
+      @prototype = args.pop if args.size > 1
     end
 
     def variables(*args)
@@ -79,9 +74,8 @@ module YUML
       end
     end
 
-    def normalized_interface
-      name interface unless @name
-      return normalize(["<<#{@sterotype}>>"]).first << ';' if interface
+    def normalized_prototype
+      return normalize(["<<#{@prototype}>>"]).first << ';' if @prototype
     end
 
     def attributes(attrs)

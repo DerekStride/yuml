@@ -26,45 +26,32 @@ describe YUML::Class do
   end
 
   describe '#name' do
-    it 'takes a name and updates the class' do
-      @uut.name 'Document'
-      expect(@uut.to_s).to eq '[Document]'
-    end
-
-    it 'should work with name= as well' do
-      @uut.name = 'Document'
-      expect(@uut.to_s).to eq '[Document]'
-    end
-  end
-
-  describe '#interface' do
     before :all do
       left = "#{YUML::ESCAPE_CHARACTERS['<']}" * 2
       right = "#{YUML::ESCAPE_CHARACTERS['>']}" * 2
-      @interface_uml = "[#{left}interface#{right};Document]"
       @module_uml = "[#{left}module#{right};Document]"
     end
 
-    context 'with default sterotype' do
-      it 'takes an interface and updates the class' do
-        @uut.interface 'Document'
-        expect(@uut.to_s).to eq @interface_uml
+    context 'without a prototype' do
+      it 'takes a name and updates the class' do
+        @uut.name 'Document'
+        expect(@uut.to_s).to eq '[Document]'
       end
 
-      it 'should work with interface=' do
-        @uut.interface = 'Document'
-        expect(@uut.to_s).to eq @interface_uml
+      it 'should work with name= as well' do
+        @uut.name = 'Document'
+        expect(@uut.to_s).to eq '[Document]'
       end
     end
 
-    context 'with custom sterotype' do
-      it 'takes an interface and updates the class' do
-        @uut.interface 'Document', 'module'
+    context 'with a prototype' do
+      it 'takes a name and updates the class' do
+        @uut.name 'Document', 'module'
         expect(@uut.to_s).to eq @module_uml
       end
 
-      it 'should work with interface=' do
-        @uut.interface = 'Document', 'module'
+      it 'should work with name= as well' do
+        @uut.name = 'Document', 'module'
         expect(@uut.to_s).to eq @module_uml
       end
     end
@@ -121,7 +108,7 @@ describe YUML::Class do
     end
 
     it 'should handle interfaces' do
-      @pic.interface 'Picture'
+      @pic.name 'Picture', 'interface'
       @doc.is_a(@pic, type: :interface)
       left = "#{YUML::ESCAPE_CHARACTERS['<']}" * 2
       right = "#{YUML::ESCAPE_CHARACTERS['>']}" * 2

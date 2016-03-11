@@ -16,12 +16,9 @@ end
 
 To generate a class for the document use `uml.class` and pass a code block in to configure it. It accepts the following methods for configuration.
 
-* `name(name = nil)` (required)
-* `interface(interface = nil, sterotype = 'interface')`*
+* `name(name = nil, prototype = nil)` (required)
 * `variables(*args)`
 * `methods(*args)`
-
-\*use `interface` in place of `name` when generating an interface
 
 #### Example
 
@@ -39,7 +36,7 @@ end
 
 ```ruby
 shape = uml.class do
-  interface 'Shape', 'module'
+  name 'Shape', 'module'
   methods '+draw(id: int, content: String, style: Symbol)'
 end
 ```
