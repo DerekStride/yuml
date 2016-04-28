@@ -7,6 +7,8 @@ A Ruby DSL for generating UML built on yuml.me, visit the [homepage](http://dere
 To build a UML document start with this block of code. Everything inside the block will be used to describe the uml document you want to create.
 
 ```ruby
+require 'yuml'
+
 YUML.generate(file: 'tmp.pdf') do |uml|
   ...
 end
