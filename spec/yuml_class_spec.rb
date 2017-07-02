@@ -95,6 +95,11 @@ describe YUML::Class do
       expect(@doc.relationships).to eq '[Document]+-*>[Picture]'
     end
 
+    it 'aliases cardinality to association_name' do
+      @doc.has_a(@pic, association_name: 'profilePhoto')
+      expect(@doc.relationships).to eq '[Document]+-profilePhoto>[Picture]'
+    end
+
     it 'should handle composition and cardinality' do
       @doc.has_a(@pic, type: :composition, cardinality: [0, '*'])
       expect(@doc.relationships).to eq '[Document]++0-*>[Picture]'
@@ -125,6 +130,11 @@ describe YUML::Class do
     it 'should handle an association with cardinality' do
       @doc.associated_with(@pic, cardinality: %w(uses used))
       expect(@doc.relationships).to eq '[Document]uses-used>[Picture]'
+    end
+
+    it 'aliases cardinality to association_name' do
+      @doc.has_a(@pic, association_name: 'profilePhoto')
+      expect(@doc.relationships).to eq '[Document]+-profilePhoto>[Picture]'
     end
 
     it 'should handle a bi directional associations with cardinality' do

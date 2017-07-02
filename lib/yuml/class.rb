@@ -33,7 +33,8 @@ module YUML
       @methods << normalize(args)
     end
 
-    def has_a(dest, type: :aggregation, cardinality: nil)
+    def has_a(dest, type: :aggregation, cardinality: nil, association_name: cardinality)
+      cardinality ||= association_name
       type = :aggregation unless %i(composition aggregation).include?(type)
       relationship = YUML::Relationship.send(type, cardinality)
       @relationships << "[#{name}]#{relationship}[#{dest.name}]"
@@ -45,7 +46,8 @@ module YUML
       @relationships << "[#{dest.name}]#{relationship}[#{name}]"
     end
 
-    def associated_with(dest, type: :directed_assoication, cardinality: nil)
+    def associated_with(dest, type: :directed_assoication, cardinality: nil, association_name: cardinality)
+      cardinality ||= association_name
       type = :directed_assoication unless %i(
         association directed_assoication two_way_association dependency
       ).include?(type)
