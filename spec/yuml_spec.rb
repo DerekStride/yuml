@@ -45,7 +45,7 @@ describe YUML do
     end
 
     before :each do
-      @stub = stub_request(:any, %r{http://yuml.me/.*}).to_return(body: 'abc', status: 200)
+      @stub = stub_request(:any, %r{https://yuml.me/.*}).to_return(body: 'abc', status: 200)
     end
 
     it 'should yield the block' do
