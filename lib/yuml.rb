@@ -54,7 +54,7 @@ module YUML
   end
 
   def fetch_uml(file)
-    uri = URI("http://yuml.me/diagram/class/#{yuml}.pdf")
+    uri = URI("https://yuml.me/diagram/class/#{yuml}.pdf")
     response = Net::HTTP.get_response(uri)
     File.write(file, response.body)
   end
