@@ -70,6 +70,14 @@ describe YUML do
       expect(File.exist?(@options[:file])).to be true
       expect(File.read(@options[:file])).to eq 'abc'
     end
+
+    it 'should add a valid filetype if an invalid on is specified' do
+      stub = stub_request(:any, %r{https://yuml.me/.*.pdf}).to_return(body: 'abc', status: 200)
+      YUML.generate(file: 'invalid.jjj') do |uml|
+        uml.class { name 'Document' }
+      end
+      expect(stub).to have_been_requested
+    end
   end
 
   describe '#attach_note' do

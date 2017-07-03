@@ -54,9 +54,14 @@ module YUML
   end
 
   def fetch_uml(file)
-    uri = URI("https://yuml.me/diagram/class/#{yuml}.pdf")
+    uri = URI("https://yuml.me/diagram/class/#{yuml}#{extname(file)}")
     response = Net::HTTP.get_response(uri)
     File.write(file, response.body)
+  end
+
+  def extname(filename)
+    return '.pdf' unless %w(.pdf .png .jpg .jpeg).include?(File.extname(filename))
+    File.extname(filename).sub('.jpg', '.jpeg')
   end
 
   def encodings
