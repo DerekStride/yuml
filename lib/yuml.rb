@@ -56,7 +56,7 @@ module YUML
   def fetch_uml(file)
     uri = URI("https://yuml.me/diagram/class/#{yuml}#{extname(file)}")
     response = Net::HTTP.get_response(uri)
-    File.write(file, response.body)
+    File.open(file, 'wb') {|f| f.write(response.body)}
   end
 
   def extname(filename)
