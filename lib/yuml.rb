@@ -17,7 +17,7 @@ module YUML
     '#' => "\u0023"
   }
 
-  def generate(file: '/tmp/yuml.pdf')
+  def generate(file: '/tmp/yuml.jpg')
     classes.clear
     notes.clear
     yield self
@@ -60,7 +60,7 @@ module YUML
   end
 
   def extname(filename)
-    return '.pdf' unless %w(.pdf .png .jpg .jpeg).include?(File.extname(filename))
+    return '.jpg' unless %w(.png .jpg .jpeg).include?(File.extname(filename))
     File.extname(filename).sub('.jpg', '.jpeg')
   end
 

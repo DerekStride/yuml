@@ -9,7 +9,7 @@ To build a UML document start with this block of code. Everything inside the blo
 ```ruby
 require 'yuml'
 
-YUML.generate(file: 'tmp.pdf') do |uml|
+YUML.generate(file: 'tmp.jpg') do |uml|
   ...
 end
 ```
@@ -19,6 +19,7 @@ end
 To generate a class for the document use `uml.class` and pass a code block in to configure it. It accepts the following methods for configuration.
 
 * `name(name = nil, prototype = nil)` (required)
+* `color(color = nil)`
 * `variables(*args)`
 * `methods(*args)`
 
@@ -85,7 +86,7 @@ end
 ```ruby
 require 'yuml'
 
-YUML.generate(file: 'example.pdf') do |uml|
+YUML.generate(file: 'example.jpg') do |uml|
   document = uml.class do
     name 'Document'
     variables '-title: String', '-body: String'
