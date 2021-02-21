@@ -41,7 +41,7 @@ describe YUML do
     include FakeFS::SpecHelpers
 
     before :all do
-      @options = { file: 'test.pdf' }
+      @options = { file: 'test.jpg' }
     end
 
     before :each do
@@ -72,7 +72,7 @@ describe YUML do
     end
 
     it 'should add a valid filetype if an invalid on is specified' do
-      stub = stub_request(:any, %r{https://yuml.me/.*.pdf}).to_return(body: 'abc', status: 200)
+      stub = stub_request(:any, %r{https://yuml.me/.*.jpg}).to_return(body: 'abc', status: 200)
       YUML.generate(file: 'invalid.jjj') do |uml|
         uml.class { name 'Document' }
       end

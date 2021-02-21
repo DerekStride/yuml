@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'yuml'
-  s.version     = '0.4.4'
+  s.version     = '0.5.5'
   s.date        = '2016-03-10'
   s.summary     = 'A Ruby DSL for generating UML'
   s.description = 'A Ruby DSL for generating UML built on yuml.me'

@@ -9,6 +9,10 @@ module YUML
       @relationships = []
     end
 
+    def color(color = nil)
+      @color = color
+    end
+
     def name(name = nil, prototype = nil)
       @name = name if name
       @prototype = prototype if prototype
@@ -60,7 +64,7 @@ module YUML
     end
 
     def to_s
-      "[#{name}#{variables}#{methods}]"
+      "[#{name}#{variables}#{methods}#{@color ? "{bg:#{@color}}" : nil}]"
     end
 
     def relationships
