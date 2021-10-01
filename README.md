@@ -1,6 +1,6 @@
 # The UML DSL
 
-A Ruby DSL for generating UML built on yuml.me, visit the [homepage](http://derek.stride.link/yuml/) to learn more.
+A Ruby DSL for generating UML built on yuml.me, visit the [homepage](http://derek.stride.host/yuml/) to learn more.
 
 ## Getting Started
 
